@@ -25,5 +25,6 @@ namespace ECommerceSite.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Product> Categories { get; set; }
     }
 }
