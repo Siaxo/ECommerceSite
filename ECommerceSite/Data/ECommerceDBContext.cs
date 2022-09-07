@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceSite.Data
 {
-    public class ECommerceDBContext : DbContext
+    public class ECommerceDBContext : IdentityDbContext<IdentityUser>
     {
         public ECommerceDBContext()
         {
