@@ -20,12 +20,12 @@ namespace ECommerceSite.Data
         {
             _dbContext.Database.Migrate(); //Skapar icke existerande databaser
                                            // add-migration "" för ändringar till databas
-            SeedProducts();
             SeedRoles();
             SeedUsers();
+            SeedProducts();
 
 
-            _dbContext.SaveChanges();
+            
             // Seed default user
         }
 
@@ -34,6 +34,7 @@ namespace ECommerceSite.Data
             while (_dbContext.Products.Count() < 100)
             {
                 _dbContext.Products.Add(GenerateProduct());
+                _dbContext.SaveChanges();
             }
         }
 
@@ -53,7 +54,7 @@ namespace ECommerceSite.Data
             if (role == null)
             {
                 _dbContext.Roles.Add(new IdentityRole { Name = roleName, NormalizedName = roleName });
-                
+                _dbContext.SaveChanges();
             }
         }
 
@@ -76,15 +77,15 @@ namespace ECommerceSite.Data
         {
             var products = new Faker<Product>()
                 .StrictMode(true)
-                .RuleFor(e => e.Id, f => 0)
-                .RuleFor(e => e.Name, (f, u) => f.Commerce.Product())
+                .RuleFor(e => e.ProductId, f => 0)
+                .RuleFor(e => e.ProductName, (f, u) => f.Commerce.Product())
                 .RuleFor(e => e.Price, (f, u) => Convert.ToDecimal(f.Commerce.Price()))
                 .RuleFor(e => e.EanCode, (f, u) => f.Commerce.Ean8())
                 .RuleFor(e => e.Category, (f, u) => f.Commerce.Categories(1)[0]);
 
 
 
-            var adsGenerator = products.Generate(1).First();
+            var adsGenerator = products.Generate();
             return adsGenerator;
         }
     }

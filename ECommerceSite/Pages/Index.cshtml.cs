@@ -2,6 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ECommerceSite.Pages
 {
@@ -42,23 +47,23 @@ namespace ECommerceSite.Pages
 
         public void OnGet()
         {
-            //Categories = _dbContext.Categories.Select(c => new CategoryViewModel
-            //{
-            //    Id = c.CategoryId,
-            //    Name = c.CategoryName
+            Categories = _dbContext.Categories.Select(c => new CategoryViewModel
+            {
+                Id = c.CategoryId,
+                Name = c.CategoryName
 
-            //}).ToList();
+            }).ToList();
 
-            //Products = _dbContext.Products.Include(e => e.Category)
-            //    .OrderByDescending(t => t.ProductId)
-            //    .Take(5)
-            //    .Select(r => new ProductViewModel
-            //    {
-            //        Id = r.ProductId,
-            //        Name = r.ProductName,
-            //        CategoryName = r.Category.CategoryName,
-            //        UnitPrice = r.UnitPrice.Value
-            //    }).ToList();
+            Products = _dbContext.Products.Include(e => e.Category)
+                .OrderByDescending(t => t.ProductId)
+                .Take(5)
+                .Select(r => new ProductViewModel
+                {
+                    Id = r.ProductId,
+                    Name = r.ProductName,
+                    CategoryName = r.CategoryClass.CategoryName,
+                    UnitPrice = r.Price.Value
+                }).ToList();
         }
     }
     

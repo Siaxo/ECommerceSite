@@ -9,7 +9,11 @@ builder.Services.AddDbContext<ECommerceDBContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+})  // Add Account creation restrictions
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ECommerceDBContext>();
 
 builder.Services.AddTransient<DataInitializer>();
