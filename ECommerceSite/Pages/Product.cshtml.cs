@@ -20,7 +20,6 @@ namespace ECommerceSite.Pages
 
         public decimal? UnitPrice { get; set; }
 
-        public string CategoryName { get; set; }
 
 
 
