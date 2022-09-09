@@ -1,4 +1,4 @@
-﻿using ECommerceSite.Data;
+﻿using ECommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -61,8 +61,8 @@ namespace ECommerceSite.Pages
                 {
                     Id = r.ProductId,
                     Name = r.ProductName,
-                    CategoryName = r.CategoryClass.CategoryName,
-                    UnitPrice = r.Price.Value
+                    CategoryName = r.Category.CategoryName,
+                    UnitPrice = r.UnitPrice.Value
                 }).ToList();
         }
     }

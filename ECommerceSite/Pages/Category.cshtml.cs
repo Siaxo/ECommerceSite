@@ -1,4 +1,4 @@
-using ECommerceSite.Data;
+using ECommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,15 @@ namespace ECommerceSite.Pages
             _dbContext = dbContext;
         }
 
+        
         public string CategoryName { get; set; }
+
+        public class CategoryViewModel
+        {
+            public int Id { get; set; }
+
+            public string Name { get; set; }
+        }
 
         public class ProductViewModel
         {
@@ -28,23 +36,29 @@ namespace ECommerceSite.Pages
         }
 
 
-
+        public List<CategoryViewModel> Categories { get; set; }
         public List<ProductViewModel> Products { get; set; }
         public void OnGet(int id)
         {
+            Categories = _dbContext.Categories.Select(c => new CategoryViewModel
+            {
+                Id = c.CategoryId,
+                Name = c.CategoryName
+
+            }).ToList();
 
             CategoryName = _dbContext.Categories.First(r => r.CategoryId == id).CategoryName;
 
             Products = _dbContext.Products
                 .Include(e => e.Category)
                 .OrderByDescending(t => t.ProductId)
-                .Where(r => r.CategoryClass.CategoryId == id)
+                .Where(r => r.Category.CategoryId == id)
                 .Select(r => new ProductViewModel
                 {
                     Id = r.ProductId,
                     Name = r.ProductName,
-                    CategoryName = r.CategoryClass.CategoryName,
-                    UnitPrice = r.Price.Value
+                    CategoryName = r.Category.CategoryName,
+                    UnitPrice = r.UnitPrice.Value
                 }).ToList();
         }
     }
