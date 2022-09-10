@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ECommerceSite.Models;
 using ECommerceSite.Data;
+using ECommerceSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<ECommerceDBContext>();
 
 builder.Services.AddTransient<DataInitializer>();
+builder.Services.AddTransient<IPageService, PageService>();
 
 var app = builder.Build();
 
