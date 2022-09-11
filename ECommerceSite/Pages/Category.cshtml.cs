@@ -47,12 +47,13 @@ namespace ECommerceSite.Pages
         public List<ProductViewModel> Products { get; set; }
         public void OnGet(string query, int id, int pageno = 1)
         {
-            Categories = _dbContext.Categories.Select(c => new CategoryViewModel
-            {
-                Id = c.CategoryId,
-                Name = c.CategoryName
+            //Categories = _dbContext.Categories.Select(c => new CategoryViewModel
+            //{
+            //    Id = c.CategoryId,
+            //    Name = c.CategoryName
 
-            }).ToList();
+            //}).ToList();
+
 
             CategoryName = _dbContext.Categories.First(r => r.CategoryId == id).CategoryName;
             CurrentPage = pageno;
@@ -72,6 +73,11 @@ namespace ECommerceSite.Pages
                     UnitPrice = r.UnitPrice.Value
                 }).ToList();
 
+            Categories = pageresult.Results.Select(x => new CategoryViewModel
+            {
+                Id = x.ProductId,
+                Name = x.ProductName
+            }).ToList();
 
             PageCount = pageresult.PageCount;
         }
