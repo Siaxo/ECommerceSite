@@ -21,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddTransient<DataInitializer>();
 builder.Services.AddTransient<IPageService, PageService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
+builder.Services.AddTransient<ICartService, CartService>();
 
 var app = builder.Build();
 
