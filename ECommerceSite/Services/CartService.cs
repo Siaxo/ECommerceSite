@@ -17,9 +17,9 @@ namespace ECommerceSite.Services
             _dbContext.SaveChanges();
         }
 
-        public Cart GetCart(int id)
+        public Cart GetCart(int cartId)
         {
-            return _dbContext.Carts.Include(c => c.CartItemId).First(e => e.CartId == id);
+            return _dbContext.Carts.Include(c => c.CartItemId).First(e => e.CartId == cartId);
         }
     }
 }

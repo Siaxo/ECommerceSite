@@ -4,6 +4,7 @@ namespace ECommerceSite.Services
 {
     public interface ICartService
     {
-        public Cart GetCart(int id);
+        public void Update(Cart cart);
+        public Cart GetCart(int cartId);
     }
 }
