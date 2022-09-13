@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceSite.Migrations
 {
     [DbContext(typeof(ECommerceDBContext))]
-    [Migration("20220912101342_adding carts to the db")]
-    partial class addingcartstothedb
+    [Migration("20220913102111_added a customer class")]
+    partial class addedacustomerclass
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,15 +104,23 @@ namespace ECommerceSite.Migrations
                     b.Property<int>("CartItemId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShopCustomerId")
+                        .HasColumnType("int");
+
                     b.HasKey("CartId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ShopCustomerId");
 
                     b.ToTable("Carts");
                 });
@@ -939,6 +947,52 @@ namespace ECommerceSite.Migrations
                     b.ToTable("Shippers");
                 });
 
+            modelBuilder.Entity("ECommerceSite.Models.ShopCustomer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShopCustomers");
+                });
+
             modelBuilder.Entity("ECommerceSite.Models.SummaryOfSalesByQuarter", b =>
                 {
                     b.Property<int>("OrderId")
@@ -1304,7 +1358,15 @@ namespace ECommerceSite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECommerceSite.Models.ShopCustomer", "ShopCustomer")
+                        .WithMany("Carts")
+                        .HasForeignKey("ShopCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
+
+                    b.Navigation("ShopCustomer");
                 });
 
             modelBuilder.Entity("ECommerceSite.Models.Employee", b =>
@@ -1489,6 +1551,11 @@ namespace ECommerceSite.Migrations
             modelBuilder.Entity("ECommerceSite.Models.Shipper", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ECommerceSite.Models.ShopCustomer", b =>
+                {
+                    b.Navigation("Carts");
                 });
 
             modelBuilder.Entity("ECommerceSite.Models.Supplier", b =>

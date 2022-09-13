@@ -11,11 +11,15 @@ namespace ECommerceSite.Pages
     {
         private readonly ECommerceDBContext _dbContext;
         private readonly IPageService _pageService;
+        private readonly ICartService _cartService;
+        private readonly ICustomerService _customerService;
 
-        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService)
+        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService, ICartService cartService, ICustomerService customerService)
         {
             _dbContext = dbContext;
             _pageService = pageService;
+            _cartService = cartService;
+            _customerService = customerService;
         }
 
         
@@ -23,6 +27,10 @@ namespace ECommerceSite.Pages
         public int CurrentPage { get; set; }
         public string Query { get; set; }
         public int PageCount { get; set; }
+        public int CartId { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+
 
         public class CategoryViewModel
         {
@@ -38,9 +46,13 @@ namespace ECommerceSite.Pages
             public string Name { get; set; }
 
             public string CategoryName { get; set; }
+            public int ProductId { get; set; }
+            public int Quantity { get; set; }
+            public int CartId { get; set; }
 
             public decimal UnitPrice { get; set; }
         }
+
 
 
         public List<CategoryViewModel> Categories { get; set; }
@@ -80,6 +92,21 @@ namespace ECommerceSite.Pages
             }).ToList();
 
             PageCount = pageresult.PageCount;
+
+        }
+
+
+        public IActionResult OnPost(int customerId)
+        {
+            var customer = _customerService.GetCustomer(customerId);
+            var product = new CartItem();
+            product.ProductId = ProductId;
+            product.Quantity = Quantity;
+            product.CartId = CartId;
+            var Getcart = _cartService.AddToCart(customer.Id, product.ProductId, product.Quantity);
+
+            return Page();
+
         }
     }
 }
