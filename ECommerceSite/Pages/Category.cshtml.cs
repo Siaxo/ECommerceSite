@@ -12,14 +12,12 @@ namespace ECommerceSite.Pages
         private readonly ECommerceDBContext _dbContext;
         private readonly IPageService _pageService;
         private readonly ICartService _cartService;
-        private readonly ICustomerService _customerService;
 
-        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService, ICartService cartService, ICustomerService customerService)
+        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService, ICartService cartService)
         {
             _dbContext = dbContext;
             _pageService = pageService;
             _cartService = cartService;
-            _customerService = customerService;
         }
 
         
@@ -27,9 +25,10 @@ namespace ECommerceSite.Pages
         public int CurrentPage { get; set; }
         public string Query { get; set; }
         public int PageCount { get; set; }
-        public int CartId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
+        public int CartId { get; set; }
+        public int CategoryId { get; set; }
 
 
         public class CategoryViewModel
@@ -70,6 +69,8 @@ namespace ECommerceSite.Pages
             CategoryName = _dbContext.Categories.First(r => r.CategoryId == id).CategoryName;
             CurrentPage = pageno;
             Query = query;
+            Quantity = 1;
+            CategoryId = id;
 
             var pageresult = _pageService.GetPages(CurrentPage, query);
 
@@ -107,6 +108,17 @@ namespace ECommerceSite.Pages
 
             return Page();
 
+        }
+
+        public IActionResult OnPost(int ProductId, int categoryId)
+        {
+           var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == ProductId);
+
+            _cartService.Products.Add(product);
+
+            return RedirectToPage(new {Id = categoryId});
+
+            
         }
     }
 }

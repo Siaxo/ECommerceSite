@@ -99,10 +99,31 @@ namespace ECommerceSite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
-                    b.Property<int>("CartItemId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopCustomerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("ShopCustomerId");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("ECommerceSite.Models.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -111,16 +132,13 @@ namespace ECommerceSite.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShopCustomerId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("CartId");
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("ShopCustomerId");
-
-                    b.ToTable("Carts");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("ECommerceSite.Models.Category", b =>
@@ -748,9 +766,6 @@ namespace ECommerceSite.Migrations
                         .HasColumnType("smallint")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<int?>("ShopCustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int")
                         .HasColumnName("SupplierID");
@@ -771,8 +786,6 @@ namespace ECommerceSite.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.HasKey("ProductId");
-
-                    b.HasIndex("ShopCustomerId");
 
                     b.HasIndex(new[] { "CategoryId" }, "CategoriesProducts");
 
@@ -986,9 +999,6 @@ namespace ECommerceSite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("ZipCode")
@@ -1358,21 +1368,28 @@ namespace ECommerceSite.Migrations
 
             modelBuilder.Entity("ECommerceSite.Models.Cart", b =>
                 {
+                    b.HasOne("ECommerceSite.Models.ShopCustomer", null)
+                        .WithMany("Carts")
+                        .HasForeignKey("ShopCustomerId");
+                });
+
+            modelBuilder.Entity("ECommerceSite.Models.CartItem", b =>
+                {
+                    b.HasOne("ECommerceSite.Models.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ECommerceSite.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceSite.Models.ShopCustomer", "ShopCustomer")
-                        .WithMany("Carts")
-                        .HasForeignKey("ShopCustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cart");
 
                     b.Navigation("Product");
-
-                    b.Navigation("ShopCustomer");
                 });
 
             modelBuilder.Entity("ECommerceSite.Models.Employee", b =>
@@ -1434,10 +1451,6 @@ namespace ECommerceSite.Migrations
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .HasConstraintName("FK_Products_Categories");
-
-                    b.HasOne("ECommerceSite.Models.ShopCustomer", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ShopCustomerId");
 
                     b.HasOne("ECommerceSite.Models.Supplier", "Supplier")
                         .WithMany("Products")
@@ -1526,6 +1539,11 @@ namespace ECommerceSite.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ECommerceSite.Models.Cart", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("ECommerceSite.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -1566,8 +1584,6 @@ namespace ECommerceSite.Migrations
             modelBuilder.Entity("ECommerceSite.Models.ShopCustomer", b =>
                 {
                     b.Navigation("Carts");
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ECommerceSite.Models.Supplier", b =>

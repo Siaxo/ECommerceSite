@@ -1,6 +1,8 @@
 using ECommerceSite.Models;
+using ECommerceSite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceSite.Pages
@@ -8,10 +10,12 @@ namespace ECommerceSite.Pages
     public class ProductModel : PageModel
     {
         private readonly ECommerceDBContext _dbContext;
+        private readonly ICartService _cartService;
 
-        public ProductModel(ECommerceDBContext dbContext)
+        public ProductModel(ECommerceDBContext dbContext, ICartService cartService)
         {
             _dbContext = dbContext;
+            _cartService = cartService;
         }
 
         public int Id { get; set; }
@@ -19,6 +23,8 @@ namespace ECommerceSite.Pages
         public decimal? UnitPrice { get; set; }
         public string CategoryName { get; set; }
         public int? CategoryId { get; set; }
+        public int Quantity { get; set; }
+        public int CartId { get; set; }
 
 
 
@@ -33,13 +39,16 @@ namespace ECommerceSite.Pages
             UnitPrice = product.UnitPrice;
             CategoryId = product.CategoryId;
             CategoryName = category.CategoryName;
+            Quantity = 1;
 
-            
-            
+        }
+
+        public IActionResult OnPost(int cartId)
+        {
+            var getCart = _dbContext.Carts.FirstOrDefault(x => x.CartId == cartId);
 
 
-
-
+            return Page();
         }
     }
 }

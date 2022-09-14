@@ -1,5 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using ECommerceSite.Services
+@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="en">
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject ICartService cartservice
 <head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,12 +47,32 @@
 				<div class="container">
 					<ul class="header-links pull-left">
 						<li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-						<li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> lorum@ipsum.com</a></li>
+						<li><a href="#"><i class="fa fa-map-marker"></i> 1234 Tester Road</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
+						<li><a href="#"><i class="fa fa-eur"></i> EUR</a></li>
+						@if (!SignInManager.IsSignedIn(User))
+						{
+							<li class="nav-item">
+                    <a class="nav-link collapsed" asp-area="Identity" asp-page="/Account/Register">
+                        <i class="bi bi-card-list"></i>
+                        <span>Register</span>
+                    </a>
+                </li><!-- End Register Page Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" asp-area="Identity" asp-page="/Account/Login">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Login</span>
+                </a>
+            </li><!-- End Login Page Nav -->
+						}
+						@if (SignInManager.IsSignedIn(User))
+						{
 						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+						<button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+						}
 					</ul>
 				</div>
 			</div>
@@ -103,7 +128,7 @@
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
-										<div class="qty">3</div>
+										<div class="qty">@cartservice.Products.Count()</div>
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
@@ -135,7 +160,7 @@
 										</div>
 										<div class="cart-btns">
 											<a href="#">View Cart</a>
-										<a asp-area="Pages" asp-page="/Cart">Checkout<i class="fa fa-arrow-circle-right"></i></a>
+											<a asp-page="/Cart">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
 										</div>
 									</div>
 								</div>
