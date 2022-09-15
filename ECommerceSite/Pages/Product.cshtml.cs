@@ -20,7 +20,7 @@ namespace ECommerceSite.Pages
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal? UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
         public string CategoryName { get; set; }
         public int? CategoryId { get; set; }
         public int Quantity { get; set; }
@@ -43,12 +43,15 @@ namespace ECommerceSite.Pages
 
         }
 
-        public IActionResult OnPost(int cartId)
+        public IActionResult OnPost(int ProductId, int categoryId)
         {
-            var getCart = _dbContext.Carts.FirstOrDefault(x => x.CartId == cartId);
+            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == ProductId);
+
+            _cartService.Products.Add(product);
+
+            return RedirectToPage(new { Id = categoryId });
 
 
-            return Page();
         }
     }
 }

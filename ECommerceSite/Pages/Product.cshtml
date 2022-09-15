@@ -89,7 +89,7 @@
 								<a class="review-link" href="#">10 Review(s) | Add your review</a>
 							</div>
 							<div>
-								<h3 class="product-price">@Model.UnitPrice EUR</h3>
+								<h3 class="product-price">@Math.Round(Model.UnitPrice, 2) EUR</h3>
 								<span class="product-available">In Stock</span>
 							</div>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -116,7 +116,9 @@
 										<span class="qty-down">-</span>
 									</div>
 								</div>
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+						<form method="post" asp-route-productId="@Model.Id" asp-route-categoryId="@Model.CategoryId">
+							<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+						</form>
 							</div>
 
 							<ul class="product-btns">

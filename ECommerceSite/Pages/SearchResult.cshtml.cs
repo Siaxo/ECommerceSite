@@ -45,7 +45,7 @@ namespace ECommerceSite.Pages
                     Id = r.ProductId,
                     Name = r.ProductName,
                     CategoryName = r.Category.CategoryName,
-                    UnitPrice = r.UnitPrice.Value
+                    UnitPrice = r.UnitPrice
                 }).ToList();
         }
     }

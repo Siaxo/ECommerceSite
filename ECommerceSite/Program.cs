@@ -22,6 +22,7 @@ builder.Services.AddTransient<DataInitializer>();
 builder.Services.AddTransient<IPageService, PageService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddSingleton<ICartService, CartService>();
+builder.Services.AddSingleton<IWishListService, WishListService>();
 
 var app = builder.Build();
 

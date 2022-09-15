@@ -1,6 +1,9 @@
 ﻿@page
+@using ECommerceSite.Services
 @model ECommerceSite.Pages.CartModel
+
 @{
+	@inject ICartService cartservice
 }
 <!-- BREADCRUMB -->
 		<div id="breadcrumb" class="section">
@@ -35,30 +38,34 @@
 							<div class="section-title">
 								<h3 class="title">Billing address</h3>
 							</div>
+							<form method="post">
 							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
+								
+								<input class="input" type="text" name="first-name" asp-for="FirstName" placeholder="First Name">
+								
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
+								<input class="input" type="text" name="last-name" asp-for="LastName" placeholder="Last Name">
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
+								<input class="input" type="email" name="email" asp-for="Email" placeholder="Email">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="address" placeholder="Address">
+								<input class="input" type="text" name="address" asp-for="Address" placeholder="Address">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
+								<input class="input" type="text" name="city" asp-for="City" placeholder="City">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
+								<input class="input" type="text" name="country" asp-for="Country" placeholder="Country">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+								<input class="input" type="text" name="zip-code" asp-for="ZipCode" placeholder="ZIP Code">
 							</div>
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
+								<input class="input" type="tel" name="tel" asp-for="PhoneNumber" placeholder="Telephone">
 							</div>
+							</form>
 							<div class="form-group">
 								<div class="input-checkbox">
 									<input type="checkbox" id="create-account">
@@ -134,22 +141,20 @@
 								<div><strong>TOTAL</strong></div>
 							</div>
 							<div class="order-products">
+								@foreach(var product in cartservice.Products)
+								{
 								<div class="order-col">
-									<div>1x Product Name Goes Here</div>
-									<div>$980.00</div>
+									<div>1x @product.ProductName</div>
+									<div>@Math.Round(product.UnitPrice,2) EUR</div>
 								</div>
-								<div class="order-col">
-									<div>2x Product Name Goes Here</div>
-									<div>$980.00</div>
-								</div>
-							</div>
+						}
 							<div class="order-col">
 								<div>Shiping</div>
 								<div><strong>FREE</strong></div>
 							</div>
 							<div class="order-col">
 								<div><strong>TOTAL</strong></div>
-								<div><strong class="order-total">$2940.00</strong></div>
+							<div><strong class="order-total">@Math.Round(Model.TotalPrice, 2) EUR</strong></div>
 							</div>
 						</div>
 						<div class="payment-method">
@@ -191,7 +196,9 @@
 								I've read and accept the <a href="#">terms & conditions</a>
 							</label>
 						</div>
-						<a href="#" class="primary-btn order-submit">Place order</a>
+						<form method="post">
+						<a asp-page="/Confirmation" class="primary-btn order-submit">Place order</a>
+							</form>
 					</div>
 					<!-- /Order Details -->
 				</div>

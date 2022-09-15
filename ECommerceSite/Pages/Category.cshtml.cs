@@ -12,12 +12,14 @@ namespace ECommerceSite.Pages
         private readonly ECommerceDBContext _dbContext;
         private readonly IPageService _pageService;
         private readonly ICartService _cartService;
+        private readonly IWishListService _wishListService;
 
-        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService, ICartService cartService)
+        public CategoryModel(ECommerceDBContext dbContext, IPageService pageService, ICartService cartService, IWishListService wishListService)
         {
             _dbContext = dbContext;
             _pageService = pageService;
             _cartService = cartService;
+            _wishListService = wishListService;
         }
 
         
@@ -83,7 +85,7 @@ namespace ECommerceSite.Pages
                     Id = r.ProductId,
                     Name = r.ProductName,
                     CategoryName = r.Category.CategoryName,
-                    UnitPrice = r.UnitPrice.Value
+                    UnitPrice = r.UnitPrice
                 }).ToList();
 
             Categories = pageresult.Results.Select(x => new CategoryViewModel
@@ -97,22 +99,9 @@ namespace ECommerceSite.Pages
         }
 
 
-        public IActionResult OnPost(int customerId)
+        public IActionResult OnPost(int productId, int categoryId)
         {
-            var customer = _customerService.GetCustomer(customerId);
-            var product = new CartItem();
-            product.ProductId = ProductId;
-            product.Quantity = Quantity;
-            product.CartId = CartId;
-            var Getcart = _cartService.AddToCart(customer.Id, product.ProductId, product.Quantity);
-
-            return Page();
-
-        }
-
-        public IActionResult OnPost(int ProductId, int categoryId)
-        {
-           var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == ProductId);
+           var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
 
             _cartService.Products.Add(product);
 
@@ -120,5 +109,16 @@ namespace ECommerceSite.Pages
 
             
         }
+
+        //public IActionResult OnPost2(int productId2, int categoryId2)
+        //{
+        //    var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId2);
+
+        //    _wishListService.WishList.Add(product);
+
+        //    return RedirectToPage(new { Id = categoryId2 });
+
+
+        //}
     }
 }
