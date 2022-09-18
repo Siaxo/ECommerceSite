@@ -5,6 +5,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject ICartService cartservice
+@inject IWishListService wishlistService
 <head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -118,7 +119,7 @@
 									<a href="#">
 										<i class="fa fa-heart-o"></i>
 										<span>Your Wishlist</span>
-										<div class="qty">2</div>
+										<div class="qty">@wishlistService.WishList.Count()</div>
 									</a>
 								</div>
 								<!-- /Wishlist -->
