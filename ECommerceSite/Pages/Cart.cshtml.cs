@@ -49,7 +49,7 @@ namespace ECommerceSite.Pages
  
         public void OnGet()
         {
-            TotalPrice = _cartService.Products.Sum(t => t.UnitPrice);
+            TotalPrice = _cartService.ShoppingCart.Sum(t => t.UnitPrice);
         }
 
         public IActionResult OnPost()

@@ -103,7 +103,7 @@ namespace ECommerceSite.Pages
         {
            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
 
-            _cartService.Products.Add(product);
+            _cartService.ShoppingCart.Add(product);
 
             return RedirectToPage(new {Id = categoryId});
 

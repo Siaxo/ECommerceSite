@@ -4,6 +4,6 @@ namespace ECommerceSite.Services
 {
     public interface ICartService
     {
-        public List<Product> Products { get; set; }
+        public List<Product> ShoppingCart { get; set; }
     }
 }

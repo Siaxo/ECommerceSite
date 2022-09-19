@@ -12,6 +12,6 @@ namespace ECommerceSite.Services
         //    _dbContext = dbContext;
         //}
 
-        public List<Product> Products { get; set; } = new List<Product>();
+        public List<Product> ShoppingCart { get; set; } = new List<Product>();
     }
 }

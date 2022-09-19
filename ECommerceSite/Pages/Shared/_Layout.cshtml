@@ -129,12 +129,12 @@
 									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
-										<div class="qty">@cartservice.Products.Count()</div>
+										<div class="qty">@cartservice.ShoppingCart.Count()</div>
 									</a>
 									<div class="cart-dropdown">
 										<div class="cart-list">
 											<div class="product-widget">
-												@foreach(var product in cartservice.Products)
+											@foreach (var product in cartservice.ShoppingCart)
 												{
 												<div class="product-img">
 													<img src="./img/product01.png" alt="">

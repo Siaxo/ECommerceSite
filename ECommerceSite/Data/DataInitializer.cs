@@ -17,14 +17,10 @@ namespace ECommerceSite.Data
 
         public void SeedData()
         {
-            _dbContext.Database.Migrate(); //Skapar icke existerande databaser
-                                           // add-migration "" för ändringar till databas
+            _dbContext.Database.Migrate(); 
+                                           
             SeedRoles();
             SeedUsers();
-
-
-
-            // Seed default user
         }
 
         
