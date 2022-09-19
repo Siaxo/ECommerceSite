@@ -43,13 +43,13 @@ namespace ECommerceSite.Pages
 
         }
 
-        public IActionResult OnPost(int ProductId, int categoryId)
+        public IActionResult OnPost(int productId)
         {
-            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == ProductId);
+            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
 
             _cartService.ShoppingCart.Add(product);
 
-            return RedirectToPage(new { Id = categoryId });
+            return RedirectToPage(new { Id = productId });
 
 
         }
