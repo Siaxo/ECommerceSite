@@ -67,5 +67,10 @@ namespace ECommerceSite.Pages
 
             return RedirectToAction("Confirmation");
         }
+
+        public void OnPostClearShoppingCart()
+        {
+            _cartService.ShoppingCart.Clear();
+        }
     }
 }

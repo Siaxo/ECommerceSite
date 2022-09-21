@@ -196,8 +196,8 @@
 								I've read and accept the <a href="#">terms & conditions</a>
 							</label>
 						</div>
-						<form method="post">
-						<a asp-page="/Confirmation" class="primary-btn order-submit">Place order</a>
+						<form method="post" asp-page-handler="ClearShoppingCart">
+						<a type="submit" asp-page="/Confirmation" class="primary-btn order-submit">Place order</a>
 							</form>
 					</div>
 					<!-- /Order Details -->

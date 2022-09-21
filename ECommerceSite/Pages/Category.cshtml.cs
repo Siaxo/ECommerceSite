@@ -99,26 +99,24 @@ namespace ECommerceSite.Pages
         }
 
 
-        public IActionResult OnPost(int productId, int categoryId)
+        public IActionResult OnPostAddToCart(int productId, int categoryId)
         {
            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
-
+            
             _cartService.ShoppingCart.Add(product);
+            _wishListService.WishList.Remove(product);
 
             return RedirectToPage(new {Id = categoryId});
 
-            
         }
 
-        //public IActionResult OnPost2(int productId2, int categoryId2)
-        //{
-        //    var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId2);
+        public IActionResult OnPostAddToWishList (int productId, int categoryId)
+        {
+            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
 
-        //    _wishListService.WishList.Add(product);
-
-        //    return RedirectToPage(new { Id = categoryId2 });
-
-
-        //}
+            _wishListService.WishList.Add(product);
+            
+            return RedirectToPage(new { Id = categoryId });
+        }
     }
 }
