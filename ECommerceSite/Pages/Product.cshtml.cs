@@ -11,11 +11,13 @@ namespace ECommerceSite.Pages
     {
         private readonly ECommerceDBContext _dbContext;
         private readonly ICartService _cartService;
+        private readonly IWishListService _wishListService;
 
-        public ProductModel(ECommerceDBContext dbContext, ICartService cartService)
+        public ProductModel(ECommerceDBContext dbContext, ICartService cartService, IWishListService wishListService)
         {
             _dbContext = dbContext;
             _cartService = cartService;
+            _wishListService = wishListService;
         }
 
         public int Id { get; set; }
@@ -43,7 +45,7 @@ namespace ECommerceSite.Pages
 
         }
 
-        public IActionResult OnPost(int productId)
+        public IActionResult OnPostAddToCart(int productId)
         {
             var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
 
@@ -52,6 +54,15 @@ namespace ECommerceSite.Pages
             return RedirectToPage(new { Id = productId });
 
 
+        }
+
+        public IActionResult OnPostAddToWishList(int productId)
+        {
+            var product = _dbContext.Products.FirstOrDefault(x => x.ProductId == productId);
+
+            _wishListService.WishList.Add(product);
+
+            return RedirectToPage(new { Id = productId });
         }
     }
 }

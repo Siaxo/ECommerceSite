@@ -116,13 +116,15 @@
 										<span class="qty-down">-</span>
 									</div>
 								</div>
-						<form method="post" asp-route-productId="@Model.Id">
+						<form method="post" asp-page-handler="AddToCart" asp-route-productId="@Model.Id">
 							<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
 						</form>
 							</div>
 
 							<ul class="product-btns">
-								<li><a href="#"><i class="fa fa-heart-o"></i> add to wishlist</a></li>
+								<form method="post" asp-page-handler="AddToWishList" asp-route-productId="@Model.Id">
+								<li><button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button></li>
+								</form>
 							</ul>
 
 							<ul class="product-links">
